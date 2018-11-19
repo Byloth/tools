@@ -1,0 +1,35 @@
+{
+  "name": "byloth-tools",
+  "version": "1.0.0",
+  "description": "Some useful tools that can be run directly from your browser.",
+  "main": "index.html",
+  "scripts": {
+    "build": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Byloth/Tools.git"
+  },
+  "author": "Byloth",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Byloth/Tools/issues"
+  },
+  "homepage": "https://byloth.github.io/Tools/index.html",
+  "dependencies": {
+    "bootstrap": "^4.1.3",
+    "jquery": "^3.3.1",
+    "popper.js": "^1.14.5"
+  },
+  "devDependencies": {
+    "autoprefixer": "^9.3.1",
+    "css-loader": "^1.0.1",
+    "node-sass": "^4.10.0",
+    "postcss-loader": "^3.0.0",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.26.0",
+    "webpack-cli": "^3.1.2"
+  }
+}
