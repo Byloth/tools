@@ -68,14 +68,14 @@
         {
             commandsDiv.innerHTML = "";
 
-            addParagraph("git clone " + repoUrl);
+            addParagraph("git clone https://github.com/" + repoUser + "/" + repoName + ".git");
             addParagraph("cd " + repoName);
             addParagraph("git fetch --all");
 
             if (branches.length > 0)
             {
                 addParagraph(" # ------------------------------------------------------------------------- #");
-                addParagraph(" # Inizio del fetch dei branch...");
+                addParagraph(" # Start fetching branches...");
                 addParagraph(" #");
 
                 for (let branch of branches)
@@ -84,14 +84,14 @@
                 }
                 
                 addParagraph(" #");
-                addParagraph(" # Fine del fetch dei branch...");
+                addParagraph(" # Stop fetching branches...");
                 addParagraph(" # ---------------------------------------------------------------- #");
             }
 
             if (pulls.length > 0)
             {
                 addParagraph(" # ------------------------------------------------------------------------- #");
-                addParagraph(" # Inizio del fetch delle pull request...");
+                addParagraph(" # Start fetching PRs...");
                 addParagraph(" #");
 
                 for (let pull of pulls)
@@ -100,7 +100,7 @@
                 }
                 
                 addParagraph(" #");
-                addParagraph(" # Fine del fetch delle pull request...");
+                addParagraph(" # Stop fetching PRs...");
                 addParagraph(" # ---------------------------------------------------------------- #");
             }
 
@@ -136,8 +136,8 @@
         {
             console.error(err);
 
-            alert("Si è verificato un errore sconosciuto.\n" +
-                  "Si consiglia di leggere i dettagli presenti nella console per ricevere ulteriori informazioni.");
+            alert("An unknown error occurred.\n" +
+                  "Please, read the JavaScript console of your browser for more details about this.");
         }
     };
     let pullsFetched = function()
@@ -165,8 +165,8 @@
         {
             console.error(err);
 
-            alert("Si è verificato un errore sconosciuto.\n" +
-                  "Si consiglia di leggere i dettagli presenti nella console per ricevere ulteriori informazioni.");
+            alert("An unknown error occurred.\n" +
+                  "Please, read the JavaScript console of your browser for more details about this.");
         }
     };
 
@@ -199,7 +199,7 @@
     {
         repoUrl = repoInput.value;
 
-        let regex = new RegExp("^https:\/\/github.com/(.*?)/(.*?)/?$", "gi");
+        let regex = new RegExp("^(?:https:\/\/|git@)github.com[\/:](.*?)\/(.*?)(?:\/|\.git)?$", "gi");
         let matches =  regex.exec(repoUrl);
 
         if (!isEmpty(matches))
@@ -217,7 +217,7 @@
         }
         else
         {
-            alert("Inserisci un URL di un repository di GitHub valido.");
+            alert("Please, insert a valid GitHub repository URL.");
         }
     };
 
