@@ -2,268 +2,64 @@
 <html>
     <head></head>
     <body>
-        <div style="margin-bottom: 1em;">
-            <label for="repo">
-                URL del repo di GitHub:
-                <input id="repo" type="url" placeholder="https://github.com/&lt;user&gt;/&lt;repo&gt;/" style="width: 250px;" />
-            </label>
+        <div class="jumbotron">
+            <div class="container">
+                <h1 class="display-4">Byloth's tools</h1>
+                <p class="lead">Get all branches and PRs from a GitHub repository</p>
+            </div>
         </div>
-        <div>
-            <label for="page">
-                Numero della pagina:
-                <input id="page" type="number" value="1" />
-            </label>
+        <div class="container">
+            <form>
+                <div class="form-group">
+                    <label for="repo">URL del repo di GitHub:</label>
+                    <input id="repo" class="form-control" type="url" placeholder="https://github.com/&lt;user&gt;/&lt;repo&gt;/" />
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            <label for="page">Numero della pagina:</label>
+                        </div>
+                        <div class="col">
+                            <label for="results">Numero di risultati per pagina:</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <input id="page" class="form-control" type="number" value="1" />
+                        </div>
+                        <div class="col">
+                            <input id="results" class="form-control" type="number" value="25" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            <label for="user">GitHub Username:</label>
+                        </div>
+                        <div class="col">
+                            <label for="pass">GitHub Password:</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <input id="user" class="form-control" />
+                        </div>
+                        <div class="col">
+                            <input id="pass" class="form-control" type="password" />
+                        </div>
+                    </div>
+                </div>
+                <button id="go" class="btn btn-primary" type="button">
+                    Vai!
+                </button>
+            </form>
+            <hr style="margin-bottom: 1em;" />
+            <div class="card">
+                <div id="commands" class="card-body" style="font-family: monospace;"></div>
+            </div>
         </div>
-        <div style="margin-bottom: 1em;">
-            <label for="results">
-                Numero di risultati per pagina:
-                <input id="results" type="number" value="25" />
-            </label>
-        </div>
-        <div>
-            <label for="user">
-                GitHub Username:
-                <input id="user" />
-            </label>
-        </div>
-        <div style="margin-bottom: 1em;">
-            <label for="pass">
-                GitHub Password:
-                <input id="pass" type="password" />
-            </label>
-        </div>
-        <button id="go" style="margin-bottom: 1em;">
-            Vai!
-        </button>
-        <hr style="margin-bottom: 1em;" />
-        <div id="commands" style="font-family: monospace;"></div>
-        <script type="text/javascript">
-            "use strict";
-
-            // Variables...
-            //
-            let branches = undefined;
-            let pulls = undefined;
-
-            let repoUrl = undefined;
-            let repoUser = undefined;
-            let repoName = undefined;
-
-            let pageNumber = undefined;
-            let resultsNumber = undefined;
-
-            let user = undefined;
-            let pass = undefined;
-
-            let repoInput = document.getElementById("repo");
-
-            let pageInput = document.getElementById("page");
-            let resultsInput = document.getElementById("results");
-
-            let userInput = document.getElementById("user");
-            let passInput = document.getElementById("pass");
-
-            let goButton = document.getElementById("go");
-
-            let commandsDiv = document.getElementById("commands");
-
-            // Functions...
-            //
-            let isEmpty = function(param)
-            {
-                return ((param === undefined) || (param === null) || (param === ""));
-            };
-            let addParagraph = function(text)
-            {
-                let paragraph = document.createElement("p");
-                let textNode = document.createTextNode(text);
-
-                paragraph.appendChild(textNode);
-                commandsDiv.appendChild(paragraph);
-            };
-
-            let resetVariables = function()
-            {
-                branches = undefined;
-                pulls = undefined;
-
-                repoUrl = undefined;
-                repoUser = undefined;
-                repoName = undefined;
-
-                pageNumber = undefined;
-                resultsNumber = undefined;
-
-                user = undefined;
-                pass = undefined;
-            };
-
-            let printCommands = function()
-            {
-                if (!isEmpty(branches) && !isEmpty(pulls))
-                {
-                    commandsDiv.innerHTML = "";
-
-                    addParagraph("git clone " + repoUrl);
-                    addParagraph("cd " + repoName);
-                    addParagraph("git fetch --all");
-
-                    if (branches.length > 0)
-                    {
-                        addParagraph(" # ------------------------------------------------------------------------- #");
-                        addParagraph(" # Inizio del fetch dei branch secondari...");
-                        addParagraph(" #");
-
-                        for (let branch of branches)
-                        {
-                            addParagraph("git checkout " + branch.name);
-                        }
-                        
-                        addParagraph(" #");
-                        addParagraph(" # Fine del fetch dei branch secondari...");
-                        addParagraph(" # ---------------------------------------------------------------- #");
-                    }
-
-                    if (pulls.length > 0)
-                    {
-                        addParagraph(" # ------------------------------------------------------------------------- #");
-                        addParagraph(" # Inizio del fetch delle pull request...");
-                        addParagraph(" #");
-
-                        for (let pull of pulls)
-                        {
-                            addParagraph("git fetch origin pull/" + pull.number + "/head:pulls/" + pull.number);
-                        }
-                        
-                        addParagraph(" #");
-                        addParagraph(" # Fine del fetch delle pull request...");
-                        addParagraph(" # ---------------------------------------------------------------- #");
-                    }
-
-                    addParagraph("git pull --all");
-                    addParagraph("git pull --tags");
-                    addParagraph("git remote add linkit https://gitlab.linkgroup.it/odoo/modules/" + repoName + ".git");
-                    addParagraph("git push -u linkit --all");
-                    addParagraph("git push -u linkit --tags");
-
-                    resetVariables();
-                }
-            };
-
-            let branchesFetched = function()
-            {
-                try
-                {
-                    let responseJson = JSON.parse(this.responseText);
-
-                    if ((this.readyState === 4) && (this.status === 200))
-                    {
-                        branches = responseJson;
-
-                        printCommands();
-                    }
-                    else
-                    {
-                        console.error(this);
-
-                        alert("Ready State -> " + this.readyState + "\n" +
-                              "Status Code -> " + this.status + "\n" +
-                              "Response Message -> \"" + responseJson.message + "\"");
-                    }
-                }
-                catch (err)
-                {
-                    console.error(err);
-
-                    alert("Si è verificato un errore sconosciuto.\n" +
-                          "Si consiglia di leggere i dettagli presenti nella console per ricevere ulteriori informazioni.");
-                }
-            };
-            let pullsFetched = function()
-            {
-                try
-                {
-                    let responseJson = JSON.parse(this.responseText);
-        
-                    if ((this.readyState === 4) && (this.status === 200))
-                    {
-                        pulls = responseJson;
-                        
-                        printCommands();
-                    }
-                    else
-                    {
-                        console.error(this);
-
-                        alert("Ready State -> " + this.readyState + "\n" +
-                              "Status Code -> " + this.status + "\n" +
-                              "Response Message -> \"" + responseJson.message + "\"");
-                    }
-                }
-                catch (err)
-                {
-                    console.error(err);
-
-                    alert("Si è verificato un errore sconosciuto.\n" +
-                          "Si consiglia di leggere i dettagli presenti nella console per ricevere ulteriori informazioni.");
-                }
-            };
-
-            let startFetching = function()
-            {
-                let branchesRequest = new XMLHttpRequest();
-                let pullsRequest = new XMLHttpRequest();
-
-                branchesRequest.open("GET", "https://api.github.com/repos/" + repoUser + "/" + repoName + "/branches?page=" + pageNumber + "&per_page=" + resultsNumber, true);
-                pullsRequest.open("GET", "https://api.github.com/repos/" + repoUser + "/" + repoName + "/pulls?page=" + pageNumber + "&per_page=" + resultsNumber, true);
-
-                if (!isEmpty(user) && !isEmpty(pass))
-                {
-                    branchesRequest.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
-                    pullsRequest.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
-                }
-            
-                branchesRequest.onloadend = branchesFetched;
-                pullsRequest.onloadend = pullsFetched;
-            
-                try
-                {
-                    branchesRequest.send();
-                    pullsRequest.send();
-                }
-                catch (err) { }
-            };
-
-            let goButtonClicked = function()
-            {
-                repoUrl = repoInput.value;
-
-                let regex = new RegExp("^https:\/\/github.com/(.*?)/(.*?)/?$", "gi");
-                let matches =  regex.exec(repoUrl);
-
-                if (!isEmpty(matches))
-                {
-                    repoUser = matches[1];
-                    repoName = matches[2];
-
-                    pageNumber = pageInput.value;
-                    resultsNumber = resultsInput.value;
-
-                    user = userInput.value;
-                    pass = passInput.value;
-
-                    startFetching();
-                }
-                else
-                {
-                    alert("Inserisci un URL di un repository di GitHub valido.");
-                }
-            };
-
-            // Listeners...
-            //
-            goButton.addEventListener("click", goButtonClicked);
-        </script>
-		<script src="dist/dependencies.js"></script>
+        <script src="dist/dependencies.js"></script>
+        <script src="src/pulls.js"></script>
     </body>
 </html>
