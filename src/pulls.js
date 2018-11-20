@@ -106,9 +106,6 @@
 
             addParagraph("git pull --all");
             addParagraph("git pull --tags");
-            addParagraph("git remote add linkit https://gitlab.linkgroup.it/odoo/modules/" + repoName + ".git");
-            addParagraph("git push -u linkit --all");
-            addParagraph("git push -u linkit --tags");
 
             resetVariables();
         }
@@ -131,8 +128,8 @@
                 console.error(this);
 
                 alert("Ready State -> " + this.readyState + "\n" +
-                        "Status Code -> " + this.status + "\n" +
-                        "Response Message -> \"" + responseJson.message + "\"");
+                      "Status Code -> " + this.status + "\n" +
+                      "Response Message -> \"" + responseJson.message + "\"");
             }
         }
         catch (err)
@@ -140,7 +137,7 @@
             console.error(err);
 
             alert("Si è verificato un errore sconosciuto.\n" +
-                    "Si consiglia di leggere i dettagli presenti nella console per ricevere ulteriori informazioni.");
+                  "Si consiglia di leggere i dettagli presenti nella console per ricevere ulteriori informazioni.");
         }
     };
     let pullsFetched = function()
@@ -160,8 +157,8 @@
                 console.error(this);
 
                 alert("Ready State -> " + this.readyState + "\n" +
-                        "Status Code -> " + this.status + "\n" +
-                        "Response Message -> \"" + responseJson.message + "\"");
+                      "Status Code -> " + this.status + "\n" +
+                      "Response Message -> \"" + responseJson.message + "\"");
             }
         }
         catch (err)
@@ -169,7 +166,7 @@
             console.error(err);
 
             alert("Si è verificato un errore sconosciuto.\n" +
-                    "Si consiglia di leggere i dettagli presenti nella console per ricevere ulteriori informazioni.");
+                  "Si consiglia di leggere i dettagli presenti nella console per ricevere ulteriori informazioni.");
         }
     };
 
