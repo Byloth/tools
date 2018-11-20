@@ -1,7 +1,7 @@
-# Tools #
+# Byloth's tools #
 ### Some useful tools that can be run directly from your browser. ###
 
-Visit the [homepage](https://byloth.github.io/tools/).
+Visit the [homepage](https://byloth.github.io/tools/index.html).
 
 ---
 
