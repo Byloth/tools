@@ -16,7 +16,7 @@
   "bugs": {
     "url": "https://github.com/Byloth/tools/issues"
   },
-  "homepage": "https://byloth.github.io/tools/index.html",
+  "homepage": "https://byloth.github.io/tools/",
   "dependencies": {
     "bootstrap": "^4.3.1",
     "jquery": "^3.3.1",
