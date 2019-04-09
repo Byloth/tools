@@ -37,13 +37,30 @@
     {
         return ((param === undefined) || (param === null) || (param === ""));
     };
+
+    let createParagraph = function()
+    {
+        let _paragraph = document.createElement("p");
+
+        let _addText = function(text)
+        {
+            let _textNode = document.createTextNode(text);
+            let _space = document.createElement("br")
+
+            _paragraph.appendChild(_textNode);
+            _paragraph.appendChild(_space);
+        };
+
+        commandsDiv.appendChild(_paragraph);
+
+        return {
+            addText: _addText
+        }
+    };
+
     let addParagraph = function(text)
     {
-        let paragraph = document.createElement("p");
-        let textNode = document.createTextNode(text);
-
-        paragraph.appendChild(textNode);
-        commandsDiv.appendChild(paragraph);
+        createParagraph().addText(text);
     };
 
     let resetVariables = function()
@@ -69,43 +86,52 @@
             commandsDiv.innerHTML = "";
 
             addParagraph("git clone https://github.com/" + repoUser + "/" + repoName + ".git");
-            addParagraph("cd " + repoName);
-            addParagraph("git fetch --all");
+
+            let start = createParagraph();
+
+            start.addText("cd " + repoName);
+            start.addText("git fetch --all");
 
             if (branches.length > 0)
             {
-                addParagraph(" # ------------------------------------------------------------------------- #");
-                addParagraph(" # Start fetching branches...");
-                addParagraph(" #");
+                let branching = createParagraph();
+
+                branching.addText(" # ------------------------------------------------------------------------- #");
+                branching.addText(" # Start fetching branches...");
+                branching.addText(" #");
 
                 for (let branch of branches)
                 {
-                    addParagraph("git checkout " + branch.name);
+                    branching.addText("git checkout " + branch.name);
                 }
                 
-                addParagraph(" #");
-                addParagraph(" # Stop fetching branches...");
-                addParagraph(" # ---------------------------------------------------------------- #");
+                branching.addText(" #");
+                branching.addText(" # Stop fetching branches...");
+                branching.addText(" # ---------------------------------------------------------------- #");
             }
 
             if (pulls.length > 0)
             {
-                addParagraph(" # ------------------------------------------------------------------------- #");
-                addParagraph(" # Start fetching PRs...");
-                addParagraph(" #");
+                let fetching = createParagraph();
+
+                fetching.addText(" # ------------------------------------------------------------------------- #");
+                fetching.addText(" # Start fetching PRs...");
+                fetching.addText(" #");
 
                 for (let pull of pulls)
                 {
-                    addParagraph("git fetch origin pull/" + pull.number + "/head:pulls/" + pull.number);
+                    fetching.addText("git fetch origin pull/" + pull.number + "/head:pulls/" + pull.number);
                 }
                 
-                addParagraph(" #");
-                addParagraph(" # Stop fetching PRs...");
-                addParagraph(" # ---------------------------------------------------------------- #");
+                fetching.addText(" #");
+                fetching.addText(" # Stop fetching PRs...");
+                fetching.addText(" # ---------------------------------------------------------------- #");
             }
 
-            addParagraph("git pull --all");
-            addParagraph("git pull --tags");
+            let end = createParagraph();
+
+            end.addText("git pull --all");
+            end.addText("git pull --tags");
 
             resetVariables();
         }
