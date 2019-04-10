@@ -120,7 +120,7 @@
 
                 for (let pull of pulls)
                 {
-                    fetching.addText("git fetch origin pull/" + pull.number + "/head:pulls/" + pull.number);
+                    fetching.addText("git fetch origin pull/" + pull.number + "/head:pull/" + pull.number);
                 }
                 
                 fetching.addText(" #");
