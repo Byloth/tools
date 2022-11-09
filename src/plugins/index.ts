@@ -1,4 +1,4 @@
-import Router from "./router";
-import Store from "./store";
+import pinia from "./pinia";
+import router from "./router";
 
-export { Router, Store };
+export { pinia, router };
