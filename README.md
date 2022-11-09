@@ -1,6 +1,6 @@
-# @byloth/web-tools
+# Byloth's Web Tools 🛠
 
-This template should help get you started developing with Vue 3 in Vite.
+Some useful tools that can be run directly from your browser.
 
 ## Recommended IDE Setup
 

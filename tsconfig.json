@@ -1,16 +1,36 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.web.json",
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
   "compilerOptions": {
+    "composite": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "lib": [
+      "ESNext",
+      "DOM",
+      "ScriptHost",
+      "WebWorker"
+    ],
+    "strict": true,
+    "noImplicitThis": true,
+    "jsx": "preserve",
+    "noEmit": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "preserveValueImports": true,
+    "experimentalDecorators": true,
+    "importsNotUsedAsValues": "error",
+    "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    }
+    "paths": { "@/*": ["./src/*"] },
+    "types": [
+      "node",
+      "vite/client"
+    ]
   },
-
-  "references": [
-    {
-      "path": "./tsconfig.config.json"
-    }
+  "include": [
+    "src/**/*",
+    "src/**/*.json",
+    "src/**/*.vue"
   ]
 }
