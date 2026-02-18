@@ -9,24 +9,29 @@
 
     onMounted(async () =>
     {
-        const containers = await github.getContainers();
-
-        for (const container of containers)
+        for await (const container of github.getContainers())
         {
-            const images = await github.getContainerImages(container.name);
-            const imagesToRemove = images.filter((image: any) => image.metadata.container.tags.length === 0);
+            const imagesToRemove = github.getContainerImages(container.name)
+                .filter((image: any) =>
+                {
+                    if (image.metadata.container.tags.length === 0) { return true; }
+                    if (image.metadata.container.tags.length === 1)
+                    {
+                        const tag = image.metadata.container.tags[0];
+                        const date = new Date(tag);
+                        if (isNaN(date.getTime())) { return false; }
 
-            if (imagesToRemove.length === 0)
-            {
-                console.log(`No more images to remove for '${container.name}' package.`);
+                        const limit = new Date("2026-01-01");
+                        return (date < limit);
+                    }
+                });
 
-                continue;
-            }
-
-            for (const image of imagesToRemove)
+            for await (const image of imagesToRemove)
             {
                 github.deleteContainerImage(container.name, image.id);
             }
+
+            console.log(`No more images to remove for '${container.name}' package.`);
         }
     });
 </script>
